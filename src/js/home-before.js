@@ -11,7 +11,7 @@ import {
   getDoc,
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-const CLOUDINARY_CLOUD_NAME = "jpzoc8y7";
+const CLOUDINARY_CLOUD_NAME = "phtahisc";
 const CLOUDINARY_UPLOAD_PRESET = "vendorhub_products";
 
 // ==============================
@@ -138,10 +138,10 @@ async function handleLogin(event) {
 
     if (userData.role === "seller") {
       // Vendor
-      window.location.href = "src/pages/admin-dashboard.html";
+      window.location.href = "src/pages/admin-Dashboard.html";
     } else if (userData.role === "customer") {
       // Customer
-      window.location.href = "src/pages/loginDashboard.html";
+      window.location.href = "src/pages/logInDashboard.html";
     } else {
       throw new Error("Invalid user role.");
     }
@@ -329,7 +329,7 @@ async function handleVendorSignup(event) {
     // GO TO VENDOR DASHBOARD
     // ==========================
 
-    window.location.href = "src/pages/admin-dashboard.html";
+    window.location.href = "src/pages/admin-Dashboard.html";
   } catch (error) {
     console.error("VENDOR SIGNUP ERROR:", error);
 

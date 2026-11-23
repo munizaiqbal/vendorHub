@@ -18,7 +18,7 @@ let salesChartInstance = null;
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
-    window.location.href = "h/";
+    window.location.href = "/";
     return;
   }
 

@@ -235,7 +235,8 @@ gsap.fromTo(
     x: 80,
   },
   {
-    x: -80,
+    x: -10,
+    
     ease: "none",
 
     scrollTrigger: {

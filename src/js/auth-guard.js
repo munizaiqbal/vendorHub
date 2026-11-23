@@ -76,12 +76,12 @@ onAuthStateChanged(auth, async (user) => {
 
 function redirectUser(role) {
   if (role === "seller") {
-    window.location.href = "src/pages/admin-dashboard.html";
+    window.location.href = "src/pages/admin-Dashboard.html";
     return;
   }
 
   if (role === "customer") {
-    window.location.href = "src/pages/loginDashboard.html";
+    window.location.href = "src/pages/logInDashboard.html";
     return;
   }
 

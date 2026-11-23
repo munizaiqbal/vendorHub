@@ -14,13 +14,12 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBebR1r_hZrocQUSO3MhgPCHnhq2G2AIuM",
-  authDomain: "vendorhub-9af3a.firebaseapp.com",
-  projectId: "vendorhub-9af3a",
-  storageBucket: "vendorhub-9af3a.firebasestorage.app",
-  messagingSenderId: "545837018531",
-  appId: "1:545837018531:web:c14446ea4bf5d1559ebe16",
-  measurementId: "G-H77XM7CH5D"
+  apiKey: "AIzaSyAwgp9ChlZeIt0bLgCizwSP4P7LEmr2660",
+  authDomain: "vendorhub-58214.firebaseapp.com",
+  projectId: "vendorhub-58214",
+  storageBucket: "vendorhub-58214.firebasestorage.app",
+  messagingSenderId: "861758613152",
+  appId: "1:861758613152:web:7e3544212e0fa7a01e0bc5",
 };
 
 const app = initializeApp(firebaseConfig);

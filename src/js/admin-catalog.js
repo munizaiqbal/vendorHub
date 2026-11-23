@@ -61,7 +61,8 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-const CLOUDINARY_CLOUD_NAME = "jpzoc8y7";
+const CLOUDINARY_CLOUD_NAME = "phtahisc"; 
+
 const CLOUDINARY_UPLOAD_PRESET = "vendorhub_products";
 
 const vendorKey = "vendorhub-active-vendor";
