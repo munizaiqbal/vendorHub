@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - VendorHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../src/css/admin-dashboard.css">
+    <link rel="stylesheet" href="../../src/css/admin-catalog.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <style>
+      /* Hide the page content immediately until auth check passes */
+      body {
+        visibility: hidden;
+      }
+    </style>
+</head>
+<body>
+  <header class="navbar">
+    <a href="admin-Dashboard.html" class="navbar-brand">
+      <img class="logo" src="../../assets/category-assets/logonew.png" alt="VendorHub Logo">
+    </a>
+    <div class="navbar-user">
+      <span id="user-name-display" class="user-name">Loading...</span>
+      <button id="logout-btn" class="logout-link" type="button">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </button>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <ul class="sidebar-menu">
+        <li class="active">
+          <a href="admin-Dashboard.html">
+            <span class="menu-title"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></span>
+          </a>
+        </li>
+        <li>
+          <a href="admin-catalog.html">
+            <span class="menu-title"><i class="fa-solid fa-folder-open"></i> <span>Catalog</span></span>
+          </a>
+        </li>
+        <li>
+          <a href="admin-sales.html">
+            <span class="menu-title"><i class="fa-solid fa-cart-shopping"></i> <span>Sales</span></span>
+            <i class="fa-solid fa-chevron-right" style="font-size: 10px"></i>
+          </a>
+        </li>
+       
+      </ul>
+
+      <!-- Dynamic Sidebar Order Progress -->
+      <div class="sidebar-stats">
+        <div class="stat-progress">
+          <div class="stat-progress-header">
+            <span>Orders Completed</span>
+            <span id="stat-completed-pct">0%</span>
+          </div>
+          <div class="progress-bar"><div id="bar-completed" class="progress-fill" style="width: 0%;"></div></div>
+        </div>
+        <div class="stat-progress">
+          <div class="stat-progress-header">
+            <span>Orders Processing</span>
+            <span id="stat-processing-pct">0%</span>
+          </div>
+          <div class="progress-bar"><div id="bar-processing" class="progress-fill" style="width: 0%;"></div></div>
+        </div>
+        <div class="stat-progress">
+          <div class="stat-progress-header">
+            <span>Other Statuses</span>
+            <span id="stat-other-pct">0%</span>
+          </div>
+          <div class="progress-bar"><div id="bar-other" class="progress-fill" style="width: 0%;"></div></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <h1 class="page-title">Dashboard</h1>
+        <div class="breadcrumb">
+          <a href="#">Home</a> / <span>Dashboard</span>
+        </div>
+      </div>
+
+      <!-- Top KPI Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-body">
+            <div class="kpi-info">
+              <h4>Total Orders</h4>
+              <h2 id="kpi-total-orders">0</h2>
+            </div>
+            <div class="kpi-icon"><i class="fa-solid fa-shopping-bag"></i></div>
+          </div>
+          <div class="kpi-footer">
+            <span>Live Firestore Data</span>
+            <a href="admin-sales.html">View sales</a>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-body">
+            <div class="kpi-info">
+              <h4>Total Sales</h4>
+              <h2 id="kpi-total-sales">$0</h2>
+            </div>
+            <div class="kpi-icon"><i class="fa-solid fa-credit-card"></i></div>
+          </div>
+          <div class="kpi-footer">
+            <span>Live Firestore Data</span>
+            <a href="admin-sales.html">View sales</a>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-body">
+            <div class="kpi-info">
+              <h4>Total Customers</h4>
+              <h2 id="kpi-total-customers">0</h2>
+            </div>
+            <div class="kpi-icon"><i class="fa-solid fa-user"></i></div>
+          </div>
+          <div class="kpi-footer">
+            <span>Unique Users</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-body">
+            <div class="kpi-info">
+              <h4>Catalog Products</h4>
+              <h2 id="kpi-total-products">0</h2>
+            </div>
+            <div class="kpi-icon"><i class="fa-solid fa-box-open"></i></div>
+          </div>
+          <div class="kpi-footer">
+            <a href="admin-catalog.html">Manage catalog</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sales Analytics Card (Full Row) -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="fa-solid fa-chart-bar"></i> Sales Analytics
+          </div>
+          <div class="card-actions">
+            <i class="fa-solid fa-calendar-days"></i>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-container dashboard-chart-container">
+            <canvas id="sales-chart" aria-label="Orders and revenue chart" role="img"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Layout: Recent Activity & Latest Orders -->
+      <div class="dashboard-grid">
+        <!-- Recent Activity Panel -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fa-solid fa-clock"></i> Recent Activity
+            </div>
+          </div>
+          <div class="card-body">
+            <ul id="recent-activity-list" class="activity-list"></ul>
+          </div>
+        </div>
+
+        <!-- Latest Orders Panel -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fa-solid fa-shopping-cart"></i> Latest Orders
+            </div>
+          </div>
+          <div class="card-body" style="padding: 0;">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Status</th>
+                    <th>Date Added</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="latest-orders-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    VendorHub &copy; 2026 All Rights Reserved.<br>
+    Admin Dashboard v1.0
+  </footer>
+  
+  <!-- Dynamic Dashboard Module Script -->
+  <script type="module" src="../../src/js/admin-dashboard.js"></script>
+</body>
+</html>
