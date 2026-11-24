@@ -109,7 +109,7 @@ width: 120px;
   display: flex;
   
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   min-height: calc(100vh - 72px);
   padding: 0 48px 0 80px;
   position: relative;
