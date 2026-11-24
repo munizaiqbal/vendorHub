@@ -2,6 +2,7 @@ import { db, auth } from "../../firebase.config.js";
 import {
   collection,
   getDocs,
+  getDoc,
   doc,
   deleteDoc,
   query,
@@ -17,24 +18,47 @@ let allVendorsData = [];
 // ======================================================
 // AUTH GUARD & INITIALIZATION
 // ======================================================
+
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
-    window.location.href = "login.html";
+    window.location.href = "logInDashboard.html";
     return;
   }
 
   try {
-    loadMasterDashboard();
+    // Get the logged-in user's Firestore profile
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
+      alert("User profile not found.");
+      await signOut(auth);
+      window.location.href = "logInDashboard.html";
+      return;
+    }
+
+    const userData = userSnap.data();
+
+    // Allow only superadmin
+    if (userData.role !== "superadmin") {
+      alert("Access denied. Super Admin only.");
+
+      window.location.href = "logInDashboard.html";
+      return;
+    }
+
+    // Authorized Super Admin
+    await loadMasterDashboard();
   } catch (err) {
     console.error("Authorization error:", err);
-    window.location.href = "login.html";
   }
 });
+
 
 // Logout handler
 document.getElementById("logout-btn")?.addEventListener("click", async () => {
   await signOut(auth);
-  window.location.href = "login.html";
+  window.location.href = "logInDashboard.html";
 });
 
 const money = (val) =>

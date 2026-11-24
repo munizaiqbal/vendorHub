@@ -105,6 +105,7 @@ loginCloseBtn.addEventListener("click", () => {
   closeModal(loginModal);
 });
 
+
 async function handleLogin(event) {
   event.preventDefault();
 
@@ -121,7 +122,6 @@ async function handleLogin(event) {
 
     // Get user's Firestore document
     const userRef = doc(db, "users", user.uid);
-
     const userSnapshot = await getDoc(userRef);
 
     if (!userSnapshot.exists()) {
@@ -131,12 +131,16 @@ async function handleLogin(event) {
     const userData = userSnapshot.data();
 
     console.log("LOGGED IN USER:", userData);
+    console.log("USER ROLE:", userData.role);
 
     // ==========================
     // CHECK USER ROLE
     // ==========================
 
-    if (userData.role === "seller") {
+    if (userData.role === "superadmin") {
+      // Super Admin
+      window.location.href = "src/pages/super-admin.html";
+    } else if (userData.role === "seller") {
       // Vendor
       window.location.href = "src/pages/admin-Dashboard.html";
     } else if (userData.role === "customer") {
@@ -147,12 +151,12 @@ async function handleLogin(event) {
     }
   } catch (error) {
     console.error("LOGIN ERROR:", error);
-
     alert(getAuthErrorMessage(error));
   } finally {
     submitButton.disabled = false;
   }
 }
+
 
 loginForm.addEventListener("submit", handleLogin);
 
